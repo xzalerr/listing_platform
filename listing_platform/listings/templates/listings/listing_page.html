@@ -1,0 +1,18 @@
+{% extends 'template.html' %}
+
+{% block title %}
+    {{ listing.title }}
+{% endblock %}
+
+{% block content %}
+    <section>
+        <h1>{{ listing.title }}</h1>
+        <p>{{ listing.date }}</p>
+        <img
+            class="picture"
+            src={{ listing.picture.url }}
+            alt={{ listing.title}}
+        />
+        <p>{{ listing.description }}</p>
+    </section>
+{% endblock %}

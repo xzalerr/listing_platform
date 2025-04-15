@@ -1,0 +1,23 @@
+{% extends 'template.html' %}
+
+{% block title %}
+    Browse Listings
+{% endblock %}
+
+{% block content %}
+    <section>
+        <h1>Listings</h1>
+
+        {% for listing in listings %}
+            <article class="listing">
+                <h2>
+                    <a href="{% url 'listings:page' slug=listing.slug %}">
+                    {{ listing.title }}
+                    </a>
+                </h2>
+                <p>{{ listing.date }}</p>
+                <p>{{ listing.description }}</p>
+            </article>
+        {% endfor %}
+    </section>
+{% endblock %}
