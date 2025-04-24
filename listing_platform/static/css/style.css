@@ -150,6 +150,29 @@ nav a:hover::after,
     cursor: pointer;
 }
 
+.nav-link-admin {
+    color: #ffc107 !important; /* Yellow color for visibility */
+    font-weight: 600;
+    position: relative;
+}
+
+.nav-link-admin i {
+    color: #ffc107;
+    transition: var(--transition);
+}
+
+.nav-link-admin:hover {
+    color: #ffe082 !important; /* Lighter yellow on hover */
+}
+
+.nav-link-admin:hover i {
+    color: #ffe082;
+}
+
+.nav-link-admin::after {
+    background-color: #ffc107 !important;
+}
+
 /* Main Content */
 main {
     flex: 1;
@@ -384,6 +407,10 @@ main {
     
     .listing-form-card {
         padding: 1.5rem;
+    }
+
+    .nav-link-admin {
+        padding: 0.5rem;
     }
 }
 

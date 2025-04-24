@@ -25,6 +25,13 @@
                     <li><a href="/"><i class="fas fa-home"></i> Home</a></li>
                     <li><a href="/about"><i class="fas fa-info-circle"></i> About</a></li>
                     <li><a href="{% url 'listings:list' %}"><i class="fas fa-list"></i> Listings</a></li>
+                    {% if user.is_superuser %}
+                        <li>
+                            <a href="/admin" class="nav-link-admin">
+                                <i class="fas fa-lock"></i> Admin Panel
+                            </a>
+                        </li>
+                    {% endif %}
                     {% if user.is_authenticated %}
                         <li>
                             <a href="{% url 'listings:listing-new' %}" class="nav-link-listing-new">
@@ -55,7 +62,7 @@
 
     <footer>
         <div class="container">
-            <p>&copy; 2023 TradeHub Marketplace. All rights reserved.</p>
+            <p>&copy; 2025 TradeHub Marketplace. All rights reserved.</p>
         </div>
     </footer>
 </body>
