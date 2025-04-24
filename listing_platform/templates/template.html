@@ -9,8 +9,12 @@
             TradeHub Marketplace
         {% endblock %}
     </title>
+    <!-- Static CSS -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <header>
@@ -21,6 +25,24 @@
                     <li><a href="/"><i class="fas fa-home"></i> Home</a></li>
                     <li><a href="/about"><i class="fas fa-info-circle"></i> About</a></li>
                     <li><a href="{% url 'listings:list' %}"><i class="fas fa-list"></i> Listings</a></li>
+                    {% if user.is_authenticated %}
+                        <li>
+                            <a href="{% url 'listings:listing-new' %}" class="nav-link-listing-new">
+                                <i class="fas fa-plus-circle"></i> New Listing
+                            </a>
+                        </li>
+                        <li>
+                            <form action="{% url 'users:logout' %}" method="post" class="logout-form">
+                                {% csrf_token %}
+                                <button type="submit" class="nav-link-button">
+                                    <i class="fas fa-sign-out-alt"></i> Logout
+                                </button>
+                            </form>
+                        </li>
+                    {% else %}
+                        <li><a href="{% url 'users:login' %}"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+                        <li><a href="{% url 'users:register' %}"><i class="fas fa-user-plus"></i> Register</a></li>
+                    {% endif %}
                 </ul>
             </nav>
         </div>

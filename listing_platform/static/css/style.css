@@ -6,15 +6,13 @@
     --dark: #212529;
     --gray: #6c757d;
     --light-gray: #e9ecef;
-    
-    /* New variables for consistency */
     --border-radius: 8px;
     --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     --transition: all 0.3s ease;
-
     --image-max-width: 550px;
 }
 
+/* Base Styles */
 * {
     margin: 0;
     padding: 0;
@@ -38,7 +36,7 @@ body {
     padding: 0 20px;
 }
 
-/* Improved header with gradient */
+/* Header Styles */
 header {
     background: linear-gradient(135deg, var(--primary), var(--secondary));
     color: white;
@@ -72,27 +70,35 @@ header h1 a:hover {
     opacity: 0.9;
 }
 
-/* Enhanced navigation */
+/* Navigation Styles */
 nav ul {
     display: flex;
     list-style: none;
-    gap: 2rem;
+    gap: 1.5rem;
+    margin: 0;
+    padding: 0;
 }
 
-nav a {
+nav a, 
+.nav-link-button {
     color: white;
     font-weight: 500;
     text-decoration: none;
     transition: var(--transition);
     padding: 0.5rem 0;
     position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
-nav a:hover {
+nav a:hover, 
+.nav-link-button:hover {
     color: var(--light-gray);
 }
 
-nav a::after {
+nav a::after, 
+.nav-link-button::after {
     content: '';
     position: absolute;
     bottom: 0;
@@ -103,122 +109,191 @@ nav a::after {
     transition: var(--transition);
 }
 
-nav a:hover::after {
+nav a:hover::after, 
+.nav-link-button:hover::after {
     width: 100%;
 }
 
-/* Modern main content area */
+/* New Listing Link */
+.nav-link-listing-new i {
+    color: var(--primary-light);
+    transition: var(--transition);
+}
+
+.nav-link-listing-new:hover i {
+    color: white;
+}
+
+.nav-link-listing-new::after {
+    background-color: var(--primary-light);
+}
+
+.nav-link-listing-new:hover::after {
+    background-color: white;
+}
+
+.nav-link-listing-new .fa-plus-circle {
+    font-size: 1.1em;
+}
+
+/* Logout Button */
+.logout-form {
+    display: inline;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-link-button {
+    background: none;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+/* Main Content */
 main {
     flex: 1;
-    padding: 3rem 0;
-    background-color: white;
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
-}
-
-/* Listing section styles */
-section {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 2rem;
-    background-color: white;
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
-}
-
-section h1 {
-    color: var(--secondary);
-    font-size: 2rem;
-    margin-bottom: 1rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 2px solid var(--light-gray);
-}
-
-section p {
-    margin-bottom: 1.5rem;
-    color: var(--dark);
-    line-height: 1.7;
-}
-
-section p:last-child {
-    margin-bottom: 0;
-}
-
-/* Enhanced picture styling */
-.picture {
-    max-width: var(--image-max-width);
-    width: 100%;
-    height: auto;
-    max-height: 350px; /* Reduced from 500px */
-    object-fit: contain;
-    display: block;
-    margin: 1.5rem auto;
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
-    border: 1px solid var(--light-gray);
-    transition: var(--transition);
-    background-color: var(--light);
-    padding: 0.5rem;
-}
-
-.picture:hover {
-    transform: translateY(-3px); /* More subtle hover effect */
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-}
-
-/* Improved footer */
-footer {
-    background-color: var(--dark);
-    color: white;
     padding: 2rem 0;
-    text-align: center;
-    margin-top: auto;
 }
 
-footer p {
-    margin-bottom: 1rem;
-}
-
-.social-links {
-    margin-top: 1.5rem;
-    display: flex;
-    justify-content: center;
-    gap: 1.5rem;
-}
-
-.social-links a {
-    color: white;
-    font-size: 1.5rem;
-    transition: var(--transition);
-}
-
-.social-links a:hover {
-    color: var(--primary-light);
-    transform: translateY(-3px);
-}
-
-/* Card styles - more modern */
+/* Card Styles */
 .card {
     background: white;
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
     padding: 2rem;
     margin-bottom: 2rem;
-    transition: var(--transition);
+}
+
+/* Auth Styles */
+.auth-card {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 2.5rem;
+}
+
+.auth-card h1 {
+    text-align: center;
+    color: var(--secondary);
+    margin-bottom: 0.5rem;
+}
+
+.auth-card .subtitle {
+    text-align: center;
+    color: var(--gray);
+    margin-bottom: 2rem;
+}
+
+.form-with-validation {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-group label {
+    font-weight: 500;
+    color: var(--dark);
+}
+
+.form-group input {
+    padding: 0.75rem;
     border: 1px solid var(--light-gray);
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    transition: var(--transition);
 }
 
-.card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+.form-group input:focus {
+    border-color: var(--primary);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(68, 183, 139, 0.2);
 }
 
-.card h2 {
+.form-help {
+    color: var(--gray);
+    font-size: 0.85rem;
+    line-height: 1.4;
+}
+
+.btn-block {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.1rem;
+    margin-top: 1rem;
+}
+
+.auth-footer {
+    text-align: center;
+    margin-top: 1.5rem;
+    color: var(--gray);
+}
+
+.auth-footer a {
     color: var(--primary);
-    margin-bottom: 1.5rem;
-    font-size: 1.5rem;
+    text-decoration: none;
+    font-weight: 500;
 }
 
-/* Button styles */
+.auth-footer a:hover {
+    text-decoration: underline;
+}
+
+/* Alert Styles */
+.alert {
+    padding: 1rem;
+    border-radius: var(--border-radius);
+    margin-bottom: 1.5rem;
+}
+
+.alert-error {
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    color: #721c24;
+}
+
+.alert-info {
+    background-color: #d1ecf1;
+    border: 1px solid #bee5eb;
+    color: #0c5460;
+}
+
+.alert h3 {
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+}
+
+.alert ul {
+    margin-left: 1.5rem;
+}
+
+.alert li {
+    margin-bottom: 0.25rem;
+}
+
+/* Remember Me Checkbox */
+.remember-me {
+    flex-direction: row;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.remember-me input[type="checkbox"] {
+    width: auto;
+    margin: 0;
+}
+
+.remember-me label {
+    margin: 0;
+    font-weight: normal;
+}
+
+/* Button Styles */
 .btn {
     display: inline-block;
     background: var(--primary);
@@ -230,21 +305,68 @@ footer p {
     border: none;
     cursor: pointer;
     font-weight: 500;
-    text-align: center;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
 .btn:hover {
     background: var(--secondary);
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
 }
 
-/* Responsive adjustments */
+/* Listing Form Styles */
+.listing-form-card {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+}
+
+.listing-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.listing-form .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.listing-form label {
+    font-weight: 500;
+    color: var(--dark);
+}
+
+.listing-form input[type="text"],
+.listing-form textarea,
+.listing-form input[type="file"] {
+    padding: 0.75rem;
+    border: 1px solid var(--light-gray);
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    transition: var(--transition);
+}
+
+.listing-form textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.listing-form input:focus,
+.listing-form textarea:focus {
+    border-color: var(--primary);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(68, 183, 139, 0.2);
+}
+
+.listing-form .form-help {
+    color: var(--gray);
+    font-size: 0.85rem;
+}
+
+/* Responsive Styles */
 @media (max-width: 768px) {
     header .container {
         flex-direction: column;
-        text-align: center;
     }
     
     nav ul {
@@ -252,33 +374,29 @@ footer p {
         gap: 1rem;
     }
     
-    section {
+    .auth-card {
         padding: 1.5rem;
     }
     
-    .picture {
-        max-width: 90%;
-        max-height: 300px; /* Slightly smaller on tablets */
+    .nav-link-listing-new {
+        padding: 0.5rem;
+    }
+    
+    .listing-form-card {
+        padding: 1.5rem;
     }
 }
 
 @media (max-width: 480px) {
-    :root {
-        --border-radius: 6px;
+    .auth-card {
+        padding: 1.25rem;
     }
     
-    section {
-        padding: 1rem;
+    .form-group input {
+        padding: 0.65rem;
     }
     
-    .picture {
-        max-width: 95%;
-        max-height: 250px; /* Smaller for mobile */
-        margin: 1rem auto;
-    }
-    
-    .btn {
-        padding: 0.6rem 1.2rem;
-        font-size: 0.9rem;
+    .listing-form-card {
+        padding: 1.25rem;
     }
 }

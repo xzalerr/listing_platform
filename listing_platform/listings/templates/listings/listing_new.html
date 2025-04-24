@@ -1,0 +1,34 @@
+{% extends 'template.html' %}
+
+{% block title %}
+    New Listing | TradeHub
+{% endblock %}
+
+{% block content %}
+    <div class="card listing-form-card">
+        <h1>Create New Listing</h1>
+        
+        <form class="listing-form" action="{% url 'listings:listing-new' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                {{ form.title.label_tag }}
+                {{ form.title }}
+                <small class="form-help">Give your item a descriptive title</small>
+            </div>
+            
+            <div class="form-group">
+                {{ form.description.label_tag }}
+                {{ form.description }}
+                <small class="form-help">Describe condition, features, etc.</small>
+            </div>
+            
+            <div class="form-group">
+                {{ form.picture.label_tag }}
+                {{ form.picture }}
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Post Listing</button>
+        </form>
+    </div>
+{% endblock %}

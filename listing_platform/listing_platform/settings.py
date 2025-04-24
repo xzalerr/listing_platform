@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_extensions',
     'django_cleanup.apps.CleanupConfig',
-    'listings'
+    'listings',
+    'users'
 ]
 
 MIDDLEWARE = [
