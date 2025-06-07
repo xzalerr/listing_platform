@@ -6,18 +6,17 @@
 
 {% block content %}
     <section>
-        <h1>Listings</h1>
-
-        {% for listing in listings %}
-            <article class="listing">
-                <h2>
+        <h1>Browse Listings</h1>
+        <div class="listings-grid">
+            {% for listing in listings %}
+                <div class="listing-item">
                     <a href="{% url 'listings:page' slug=listing.slug %}">
-                    {{ listing.title }}
+                        <h2>{{ listing.title }}</h2>
                     </a>
-                </h2>
-                <p>{{ listing.date }} by {{ listing.author }}</p>
-                <p>{{ listing.description }}</p>
-            </article>
-        {% endfor %}
+                    <p>{{ listing.date }}</p>
+                    <img src="{{ listing.picture.url }}" alt="{{ listing.title }}" class="listing-image">
+                </div>
+            {% endfor %}
+        </div>
     </section>
 {% endblock %}
