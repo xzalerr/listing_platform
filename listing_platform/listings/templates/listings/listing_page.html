@@ -10,9 +10,16 @@
         <p>{{ listing.date }}</p>
         <img
             class="picture"
-            src={{ listing.picture.url }}
-            alt={{ listing.title}}
+            src="{{ listing.picture.url }}"
+            alt="{{ listing.title }}"
         />
         <p>{{ listing.description }}</p>
+        
+        {% if is_author %}
+            <div class="actions">
+                <a href="{% url 'listings:listing-edit' slug=listing.slug %}" class="btn btn-primary">Edit</a>
+                <a href="{% url 'listings:listing-delete' slug=listing.slug %}" class="btn btn-primary">Delete</a>
+            </div>
+        {% endif %}
     </section>
 {% endblock %}
