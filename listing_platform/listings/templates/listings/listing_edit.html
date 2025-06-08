@@ -5,12 +5,12 @@
 {% endblock %}
 
 {% block content %}
-    <section>
-        <h1>Edit Listing</h1>
-        <form method="post" enctype="multipart/form-data" class="edit-form">
+    <section class="container">
+        <h1 class="page-title">Edit Listing</h1>
+        <form method="post" enctype="multipart/form-data" class="form">
             {% csrf_token %}
             {{ form.as_p }}
-            <div class="btn-group">
+            <div class="form-actions">
                 <button type="submit" class="btn btn-primary">Save Changes</button>
                 <button type="button" class="btn btn-secondary" onclick="window.location.href='{% url 'listings:page' slug=listing.slug %}'">Cancel</button>
             </div>

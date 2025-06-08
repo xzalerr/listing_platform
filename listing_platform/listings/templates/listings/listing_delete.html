@@ -5,12 +5,12 @@
 {% endblock %}
 
 {% block content %}
-    <section>
-        <h1>Delete Listing</h1>
+    <section class="container">
+        <h1 class="page-title">Delete Listing</h1>
         <p>Are you sure you want to delete the listing "{{ listing.title }}"?</p>
-        <form method="post">
+        <form method="post" class="form">
             {% csrf_token %}
-            <div class="btn-group">
+            <div class="form-actions">
                 <button type="submit" class="btn btn-danger">Delete</button>
                 <button type="button" class="btn btn-secondary" onclick="window.location.href='{% url 'listings:page' slug=listing.slug %}'">Cancel</button>
             </div>
