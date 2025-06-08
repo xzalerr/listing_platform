@@ -2,15 +2,20 @@ from django.db import models
 from django_extensions.db.fields import AutoSlugField
 from django.contrib.auth.models import User
 
-# Create your models here.
-
 class Listing(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField()
     slug = AutoSlugField(populate_from='title', unique=True)
     date = models.DateTimeField(auto_now_add=True)
-    picture = models.ImageField(default='database-error.jpg', blank=True)
+    picture = models.ImageField(upload_to='main_images/', blank=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
 
     def __str__(self):
         return self.title
+
+class ListingImage(models.Model):
+    listing = models.ForeignKey(Listing, related_name='images', on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='listing_images/')
+
+    def __str__(self):
+        return f"{self.listing.title} – image {self.pk}"

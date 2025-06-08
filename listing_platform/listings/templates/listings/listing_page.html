@@ -1,27 +1,38 @@
 {% extends 'template.html' %}
 
-{% block title %}
-    {{ listing.title }}
-{% endblock %}
+{% block title %}{{ listing.title }}{% endblock %}
 
 {% block content %}
-    <section class="container">
-        <div class="listing-detail card">
-            <div class="card-body">
-                <h1 class="listing-title">{{ listing.title }}</h1>
-                <p class="listing-date">
-                    {{ listing.date }}<br>
-                    <span class="listing-author">Posted by {{ listing.author.username }}</span>
-                </p>                
-                <img src="{{ listing.picture.url }}" alt="{{ listing.title }}" class="listing-image">
-                <p class="listing-description">{{ listing.description }}</p>
-                {% if is_author %}
-                    <div class="actions">
-                        <a href="{% url 'listings:listing-edit' slug=listing.slug %}" class="btn btn-primary">Edit</a>
-                        <a href="{% url 'listings:listing-delete' slug=listing.slug %}" class="btn btn-primary">Delete</a>
-                    </div>
-                {% endif %}
+<section class="container">
+    <div class="listing-detail card">
+        <div class="card-body">
+            <h1 class="listing-title">{{ listing.title }}</h1>
+            <p class="listing-date">
+                {{ listing.date }}<br>
+                <span class="listing-author">Posted by {{ listing.author.username }}</span>
+            </p>
+            <img src="{{ listing.picture.url }}" alt="{{ listing.title }}" class="listing-image">
+            <p class="listing-description">{{ listing.description }}</p>
+
+            {% if listing.images.all %}
+            <div class="gallery-grid">
+                {% for img in listing.images.all %}
+                <div class="gallery-item">
+                    <a href="{{ img.image.url }}" target="_blank">
+                        <img src="{{ img.image.url }}" alt="Image {{ forloop.counter }}">
+                    </a>
+                </div>
+                {% endfor %}
             </div>
+            {% endif %}
+
+            {% if is_author %}
+                <div class="actions">
+                    <a href="{% url 'listings:listing-edit' slug=listing.slug %}" class="btn btn-primary">Edit</a>
+                    <a href="{% url 'listings:listing-delete' slug=listing.slug %}" class="btn btn-primary">Delete</a>
+                </div>
+            {% endif %}
         </div>
-    </section>
+    </div>
+</section>
 {% endblock %}

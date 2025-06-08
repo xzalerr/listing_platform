@@ -5,15 +5,43 @@
 {% endblock %}
 
 {% block content %}
-    <section class="container">
-        <h1 class="page-title">Edit Listing</h1>
-        <form method="post" enctype="multipart/form-data" class="form">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <div class="form-actions">
-                <button type="submit" class="btn btn-primary">Save Changes</button>
-                <button type="button" class="btn btn-secondary" onclick="window.location.href='{% url 'listings:page' slug=listing.slug %}'">Cancel</button>
+<section class="container">
+    <h1 class="page-title">Edit Listing</h1>
+
+    <form method="post" enctype="multipart/form-data" class="form">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <div class="form-group">
+            <label for="id_images">Add additional images</label>
+            <input type="file" name="images" id="id_images" multiple>
+            <small class="form-help">You can upload more than one image</small>
+        </div>
+
+        {% if listing.images.all %}
+            <div class="form-group">
+                <label>Existing images:</label>
+                <div class="gallery-grid">
+                    {% for img in listing.images.all %}
+                    <div class="gallery-item">
+                        <img src="{{ img.image.url }}" alt="Image {{ forloop.counter }}">
+                        <form method="post" action="{% url 'listing-image-delete' img.pk %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                        </form>
+                    </div>
+                    {% endfor %}
+                </div>
             </div>
-        </form>
-    </section>
+        {% endif %}
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+            <button type="button" class="btn btn-secondary"
+                    onclick="window.location.href='{% url 'listings:page' slug=listing.slug %}'">
+                Cancel
+            </button>
+        </div>
+    </form>
+</section>
 {% endblock %}

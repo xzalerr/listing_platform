@@ -8,5 +8,6 @@ urlpatterns = [
     path('listing-new/', views.listing_new, name='listing-new'),
     path('<slug:slug>', views.listing_page, name='page'),
     path('listing-edit/<slug:slug>/', views.listing_edit, name='listing-edit'),
-    path('listing-delete/<slug:slug>/', views.listing_delete, name='listing-delete')
+    path('listing-delete/<slug:slug>/', views.listing_delete, name='listing-delete'),
+    path('listing-image/delete/<int:pk>/', views.delete_image, name='listing-image-delete')
 ]

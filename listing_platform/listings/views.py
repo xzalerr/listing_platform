@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Listing
 from django.contrib.auth.decorators import login_required
-from . import forms
+from .models import Listing, ListingImage
+from .forms import CreateListing
+from django.http import HttpResponseForbidden
 
 # Create your views here.
 def browse_listings(request):
@@ -13,33 +14,39 @@ def listing_page(request, slug):
     is_author = request.user.is_authenticated and listing.author == request.user
     return render(request, 'listings/listing_page.html', {'listing' : listing, 'is_author': is_author})
 
-@login_required(login_url='/users/login/')
+@login_required
 def listing_new(request):
     if request.method == 'POST':
-        form = forms.CreateListing(request.POST, request.FILES)
+        form = CreateListing(request.POST, request.FILES)
         if form.is_valid():
-            newpost = form.save(commit=False)
-            newpost.author = request.user
-            newpost.save()
+            listing = form.save(commit=False)
+            listing.author = request.user
+            listing.save()
+            for file in request.FILES.getlist('images'):
+                ListingImage.objects.create(listing=listing, image=file)
             return redirect('listings:list')
     else:
-        form = forms.CreateListing()
-    return render(request, 'listings/listing_new.html', { 'form': form})
+        form = CreateListing()
+    return render(request, 'listings/listing_new.html', {'form': form})
 
-@login_required(login_url='/users/login/')
+@login_required
 def listing_edit(request, slug):
     listing = get_object_or_404(Listing, slug=slug)
-    if listing.author != request.user:
-        return redirect('listings:list')  # Redirect if the user is not the author
-
     if request.method == 'POST':
-        form = forms.CreateListing(request.POST, request.FILES, instance=listing)
+        form = CreateListing(request.POST, request.FILES, instance=listing)
         if form.is_valid():
             form.save()
-            return redirect('listings:list')
+            for file in request.FILES.getlist('images'):
+                ListingImage.objects.create(listing=listing, image=file)
+            return redirect('listings:page', slug=listing.slug)
     else:
-        form = forms.CreateListing(instance=listing)
-    return render(request, 'listings/listing_edit.html', {'form': form, 'listing': listing})
+        form = CreateListing(instance=listing)
+
+    return render(request, 'listings/listing_edit.html', {
+        'form': form,
+        'listing': listing
+    })
+
 
 @login_required(login_url='/users/login/')
 def listing_delete(request, slug):
@@ -51,3 +58,13 @@ def listing_delete(request, slug):
         listing.delete()
         return redirect('listings:list')
     return render(request, 'listings/listing_delete.html', {'listing': listing})
+
+@login_required
+def delete_image(request, pk):
+    image = get_object_or_404(ListingImage, pk=pk)
+    if request.user != image.listing.author:
+        return HttpResponseForbidden("You cannot delete this image.")
+    
+    listing_slug = image.listing.slug
+    image.delete()
+    return redirect('listings:listing-edit', slug=listing_slug)
