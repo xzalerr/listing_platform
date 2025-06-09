@@ -41,30 +41,6 @@ def logout_view(request):
         logout(request)
         return redirect('listings:list')
     
-@login_required
-@login_required
-def send_message(request):
-    error = None
-    if request.method == 'POST':
-        form = MessageForm(request.POST)
-        if form.is_valid():
-            username = form.cleaned_data['recipient_username']
-            body = form.cleaned_data['body']
-            try:
-                recipient = User.objects.get(username=username)
-                Message.objects.create(
-                    sender=request.user,
-                    recipient=recipient,
-                    body=body
-                )
-                messages.success(request, f"Message sent to {username}")
-                return redirect('users:inbox')
-            except User.DoesNotExist:
-                error = f"No such user: {username}"
-    else:
-        form = MessageForm()
-
-    return render(request, 'users/send_message.html', {'form': form, 'error': error})
 
 @login_required
 def inbox(request):

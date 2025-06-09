@@ -41,10 +41,6 @@
             {% if request.GET.next %}
                 <input type="hidden" name="next" value = {{ request.GET.next }} />
             {% endif %}
-            <div class="form-group remember-me">
-                <input type="checkbox" name="remember_me" id="id_remember_me">
-                <label for="id_remember_me">Remember me</label>
-            </div>
             
             <button type="submit" class="btn btn-primary btn-block">Sign In</button>
             

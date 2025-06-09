@@ -8,6 +8,6 @@ urlpatterns = [
     path('login/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),
     path('inbox/', views.inbox, name='inbox'),
-    path('send-message/', views.send_message, name='send-message'),
     path('conversation/<str:username>/', views.conversation_with_user, name='conversation')
 ]
+

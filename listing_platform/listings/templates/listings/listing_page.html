@@ -32,7 +32,11 @@
                     <a href="{% url 'listings:listing-edit' slug=listing.slug %}" class="btn btn-primary">Edit</a>
                     <a href="{% url 'listings:listing-delete' slug=listing.slug %}" class="btn btn-primary">Delete</a>
                 </div>
-            {% endif %}
+                {% elif user.is_authenticated %}
+                    <a href="{% url 'users:conversation' listing.author.username %}" class="btn btn-primary" style="margin-top: 1rem;">
+                        <i class="fas fa-envelope"></i> Send Message to Author
+                    </a>
+                {% endif %}            
         </div>
     </div>
 </section>
