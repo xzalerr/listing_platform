@@ -21,12 +21,7 @@
                                 <span class="listing-author">Posted by {{ listing.author.username }}</span>
                             </p>  
                             <div class="image-wrapper">
-                                {% if listing.picture %}
-                                    <img src="{{ listing.picture.url }}" alt="{{ listing.title }}">
-                                {% else %}
-                                    <img src="{% static '/media/database-error.jpg' %}" alt="No image">
-                                {% endif %}
-
+                                <img src="{{ listing.picture.url }}" alt="{{ listing.title }}">
                             </div>
                         </div>
                     </div>

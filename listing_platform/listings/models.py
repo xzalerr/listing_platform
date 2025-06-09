@@ -7,7 +7,7 @@ class Listing(models.Model):
     description = models.TextField()
     slug = AutoSlugField(populate_from='title', unique=True)
     date = models.DateTimeField(auto_now_add=True)
-    picture = models.ImageField(upload_to='main_images/', blank=True)
+    picture = models.ImageField(default='media/database_error.jpg', upload_to='main_images/', blank=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
 
     def __str__(self):

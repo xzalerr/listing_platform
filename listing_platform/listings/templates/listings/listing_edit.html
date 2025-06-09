@@ -1,47 +1,77 @@
 {% extends 'template.html' %}
-
-{% block title %}
-    Edit Listing
-{% endblock %}
-
+{% block title %}Edit Listing{% endblock %}
 {% block content %}
-<section class="container">
-    <h1 class="page-title">Edit Listing</h1>
+<div class="card listing-form-card">
+  <h1>Edit Listing</h1>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
 
-    <form method="post" enctype="multipart/form-data" class="form">
-        {% csrf_token %}
-        {{ form.as_p }}
+    <div class="form-group">
+      {{ form.title.label_tag }}
+      {{ form.title }}
+    </div>
 
-        <div class="form-group">
-            <label for="id_images">Add additional images</label>
-            <input type="file" name="images" id="id_images" multiple>
-            <small class="form-help">You can upload more than one image</small>
+    <div class="form-group">
+      {{ form.description.label_tag }}
+      {{ form.description }}
+    </div>
+
+    {% if listing.picture %}
+    <div class="form-group">
+      <label>Current Main Image:</label>
+      <div>
+        <img src="{{ listing.picture.url }}" style="max-width:200px;">
+      </div>
+    </div>
+    {% endif %}
+
+    {% if listing.images.exists %}
+    <div class="form-group">
+      <label>Existing Additional Images:</label>
+      <div class="gallery-grid" id="gallery">
+        {% for img in listing.images.all %}
+        <div class="gallery-item" data-id="{{ img.pk }}" onclick="toggleImageDelete({{ img.pk }}, this)">
+          <img src="{{ img.image.url }}" alt="Additional image {{ forloop.counter }}" style="max-width:150px; display:block;">
         </div>
+        {% endfor %}
+      </div>
+      <input type="hidden" name="delete_images" id="delete-images">
+      <small class="form-help">Click images to mark for deletion</small>
+    </div>
+    {% endif %}
 
-        {% if listing.images.all %}
-            <div class="form-group">
-                <label>Existing images:</label>
-                <div class="gallery-grid">
-                    {% for img in listing.images.all %}
-                    <div class="gallery-item">
-                        <img src="{{ img.image.url }}" alt="Image {{ forloop.counter }}">
-                        <form method="post" action="{% url 'listing-image-delete' img.pk %}">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                        </form>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-        {% endif %}
+    <div class="form-group">
+      <label for="id_images">Add New Additional Images:</label>
+      <input type="file" name="images" id="id_images" multiple accept="image/*">
+      <small class="form-help">You can select multiple files</small>
+      <div id="preview-new" class="gallery-grid" style="margin-top:10px;"></div>
+    </div>
 
-        <div class="form-actions">
-            <button type="submit" class="btn btn-primary">Save Changes</button>
-            <button type="button" class="btn btn-secondary"
-                    onclick="window.location.href='{% url 'listings:page' slug=listing.slug %}'">
-                Cancel
-            </button>
-        </div>
-    </form>
-</section>
+    <button type="submit" class="btn btn-primary">Save changes</button>
+    <button type="button" class="btn btn-secondary" onclick="window.location.href='{% url 'listings:page' slug=listing.slug %}'">Cancel</button>
+  </form>
+</div>
+
+<style>
+  .gallery-item.to-delete {
+    opacity: 0.5;
+    border: 2px solid red;
+  }
+</style>
+
+<script>
+  // Track IDs of images marked for deletion
+  const deleteImageIds = new Set();
+
+  function toggleImageDelete(id, elem) {
+    if (deleteImageIds.has(id)) {
+      deleteImageIds.delete(id);
+      elem.classList.remove('to-delete');
+    } else {
+      deleteImageIds.add(id);
+      elem.classList.add('to-delete');
+    }
+    document.getElementById('delete-images').value = Array.from(deleteImageIds).join(',');
+  }
+</script>
 {% endblock %}

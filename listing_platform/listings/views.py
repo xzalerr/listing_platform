@@ -31,21 +31,32 @@ def listing_new(request):
 
 @login_required
 def listing_edit(request, slug):
-    listing = get_object_or_404(Listing, slug=slug)
+    listing = get_object_or_404(Listing, slug=slug, author=request.user)
+
     if request.method == 'POST':
         form = CreateListing(request.POST, request.FILES, instance=listing)
         if form.is_valid():
             form.save()
-            for file in request.FILES.getlist('images'):
-                ListingImage.objects.create(listing=listing, image=file)
+
+            # Delete selected images
+            delete_ids = request.POST.get('delete_images', '')
+            if delete_ids:
+                ids_to_delete = [int(pk) for pk in delete_ids.split(',') if pk.isdigit()]
+                ListingImage.objects.filter(id__in=ids_to_delete, listing=listing).delete()
+
+            # Add new images
+            for f in request.FILES.getlist('images'):
+                ListingImage.objects.create(listing=listing, image=f)
+
             return redirect('listings:page', slug=listing.slug)
     else:
         form = CreateListing(instance=listing)
 
     return render(request, 'listings/listing_edit.html', {
         'form': form,
-        'listing': listing
+        'listing': listing,
     })
+
 
 
 @login_required(login_url='/users/login/')
@@ -60,11 +71,9 @@ def listing_delete(request, slug):
     return render(request, 'listings/listing_delete.html', {'listing': listing})
 
 @login_required
-def delete_image(request, pk):
-    image = get_object_or_404(ListingImage, pk=pk)
-    if request.user != image.listing.author:
-        return HttpResponseForbidden("You cannot delete this image.")
-    
-    listing_slug = image.listing.slug
-    image.delete()
-    return redirect('listings:listing-edit', slug=listing_slug)
+def delete_listing_image(request, pk):
+    img = get_object_or_404(ListingImage, pk=pk, listing__user=request.user)
+    slug = img.listing.slug
+    if request.method == 'POST':
+        img.delete()
+    return redirect('listings:listing-edit', slug=slug)
