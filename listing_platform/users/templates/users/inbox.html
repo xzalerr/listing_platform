@@ -1,31 +1,25 @@
 {% extends 'template.html' %}
 
 {% block title %}
-    Your Inbox | TradeHub
+    Your Conversations | TradeHub
 {% endblock %}
 
 {% block content %}
     <div class="card">
-        <h2 class="card-title">Inbox</h2>
+        <h2 class="card-title">Your Conversations</h2>
 
-        {% if messages %}
-            <div class="inbox-grid">
-                {% for message in messages %}
-                    <div class="card message-card">
-                        <div class="card-header">
-                            <strong>From:</strong> {{ message.sender.username }}
-                        </div>
-                        <div class="card-body">
-                            <p>{{ message.body }}</p>
-                        </div>
-                        <div class="card-footer">
-                            <em>{{ message.timestamp }}</em>
-                        </div>
-                    </div>
+        {% if conversation_users %}
+            <ul class="conversation-list">
+                {% for other_user in conversation_users %}
+                    <li class="conversation-item">
+                        <a href="{% url 'users:conversation' other_user.username %}">
+                            💬 {{ other_user.username }}
+                        </a>
+                    </li>
                 {% endfor %}
-            </div>
+            </ul>
         {% else %}
-            <p>No messages</p>
+            <p>You have no conversations yet.</p>
         {% endif %}
     </div>
 {% endblock %}

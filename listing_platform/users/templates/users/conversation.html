@@ -1,0 +1,32 @@
+{% extends 'template.html' %}
+
+{% block title %}
+    Conversation with {{ other_user.username }} | TradeHub
+{% endblock %}
+
+{% block content %}
+    <div class="card">
+        <h2 class="card-title">Conversation with {{ other_user.username }}</h2>
+
+        <div class="chat-thread">
+            {% for msg in messages_between %}
+                <div class="message-card {% if msg.sender == user %}sent{% else %}received{% endif %}">
+                    <div class="message-header">
+                        <strong>{{ msg.sender.username }}</strong> | {{ msg.timestamp|date:"Y-m-d H:i" }}
+                    </div>
+                    <div class="message-body">
+                        {{ msg.body }}
+                    </div>
+                </div>
+            {% empty %}
+                <p>No messages yet.</p>
+            {% endfor %}
+        </div>
+
+        <form method="post" class="form-with-validation">
+            {% csrf_token %}
+            {{ form.body }}
+            <button type="submit" class="btn btn-primary">Send</button>
+        </form>
+    </div>
+{% endblock %}

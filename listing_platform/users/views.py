@@ -2,11 +2,13 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, logout
 from .models import Message
-from .forms import MessageForm
+from .forms import MessageForm, DirectMessageForm
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
+from django.db import models
+
 
 
 
@@ -66,5 +68,43 @@ def send_message(request):
 
 @login_required
 def inbox(request):
-    messages = Message.objects.filter(recipient=request.user).order_by('-timestamp')
-    return render(request, 'users/inbox.html', {'messages': messages})
+    user = request.user
+    messages_qs = Message.objects.filter(
+        models.Q(sender=user) | models.Q(recipient=user)
+    )
+
+    other_users = set()
+    for msg in messages_qs:
+        other = msg.recipient if msg.sender == user else msg.sender
+        other_users.add(other)
+
+    return render(request, 'users/inbox.html', {
+        'conversation_users': sorted(other_users, key=lambda u: u.username.lower())
+    })
+
+
+@login_required
+def conversation_with_user(request, username):
+    other_user = get_object_or_404(User, username=username)
+
+    messages_between = Message.objects.filter(
+        models.Q(sender=request.user, recipient=other_user) |
+        models.Q(sender=other_user, recipient=request.user)
+    ).order_by('timestamp')
+
+    if request.method == 'POST':
+        form = DirectMessageForm(request.POST)
+        if form.is_valid():
+            msg = form.save(commit=False)
+            msg.sender = request.user
+            msg.recipient = other_user
+            msg.save()
+            return redirect('users:conversation', username=username)
+    else:
+        form = DirectMessageForm()
+
+    return render(request, 'users/conversation.html', {
+        'form': form,
+        'other_user': other_user,
+        'messages_between': messages_between
+    })
