@@ -39,6 +39,16 @@
                             </a>
                         </li>
                         <li>
+                            <a href="{% url 'users:inbox' %}" class="nav-link-inbox">
+                                <i class="fas fa-inbox"></i> Inbox
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'users:send-message' %}" class="nav-link-send">
+                                <i class="fas fa-paper-plane"></i> Send Message
+                            </a>
+                        </li>                        
+                        <li>
                             <form action="{% url 'users:logout' %}" method="post" class="logout-form">
                                 {% csrf_token %}
                                 <button type="submit" class="nav-link-button">
@@ -51,7 +61,7 @@
                         <li><a href="{% url 'users:register' %}"><i class="fas fa-user-plus"></i> Register</a></li>
                     {% endif %}
                 </ul>
-            </nav>
+            </nav>            
         </div>
     </header>
 

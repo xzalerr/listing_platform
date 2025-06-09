@@ -1,0 +1,31 @@
+{% extends 'template.html' %}
+
+{% block title %}
+    Your Inbox | TradeHub
+{% endblock %}
+
+{% block content %}
+    <div class="card">
+        <h2 class="card-title">Inbox</h2>
+
+        {% if messages %}
+            <div class="inbox-grid">
+                {% for message in messages %}
+                    <div class="card message-card">
+                        <div class="card-header">
+                            <strong>From:</strong> {{ message.sender.username }}
+                        </div>
+                        <div class="card-body">
+                            <p>{{ message.body }}</p>
+                        </div>
+                        <div class="card-footer">
+                            <em>{{ message.timestamp }}</em>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>No messages</p>
+        {% endif %}
+    </div>
+{% endblock %}
