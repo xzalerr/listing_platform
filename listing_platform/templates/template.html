@@ -22,9 +22,6 @@
             <h1><a href="/">TradeHub</a></h1>
             <nav>
                 <ul>
-                    <li><a href="/"><i class="fas fa-home"></i> Home</a></li>
-                    <li><a href="/about"><i class="fas fa-info-circle"></i> About</a></li>
-                    <li><a href="{% url 'listings:list' %}"><i class="fas fa-list"></i> Listings</a></li>
                     {% if user.is_superuser %}
                         <li>
                             <a href="/admin" class="nav-link-admin">
@@ -32,6 +29,9 @@
                             </a>
                         </li>
                     {% endif %}
+                    <li><a href="/"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="/about"><i class="fas fa-info-circle"></i> About</a></li>
+                    <li><a href="{% url 'listings:list' %}"><i class="fas fa-list"></i> Listings</a></li>
                     {% if user.is_authenticated %}
                         <li>
                             <a href="{% url 'listings:listing-new' %}" class="nav-link-listing-new">
@@ -42,7 +42,12 @@
                             <a href="{% url 'users:inbox' %}" class="nav-link-inbox">
                                 <i class="fas fa-inbox"></i> Inbox
                             </a>
-                        </li>                    
+                        </li>      
+                        <li>
+                            <a href="{% url 'users:my-profile' %}">
+                                <i class="fas fa-user-circle"></i> My Profile
+                            </a>
+                        </li>                                      
                         <li>
                             <form action="{% url 'users:logout' %}" method="post" class="logout-form">
                                 {% csrf_token %}

@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.contrib.auth import login, logout
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, SetPasswordForm
+from django.contrib.auth import login, logout, update_session_auth_hash
 from .models import Message
+from listings.models import Listing
 from .forms import MessageForm, DirectMessageForm
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -83,4 +84,23 @@ def conversation_with_user(request, username):
         'form': form,
         'other_user': other_user,
         'messages_between': messages_between
+    })
+
+@login_required
+def my_profile(request):
+    listings = Listing.objects.filter(author=request.user).order_by('-date')
+
+    if request.method == 'POST':
+        form = SetPasswordForm(user=request.user, data=request.POST)
+        if form.is_valid():
+            form.save()
+            logout(request)
+            messages.success(request, "Password changed successfully. Please log in again.")
+            return redirect('users:login')
+    else:
+        form = SetPasswordForm(user=request.user)
+
+    return render(request, 'users/my_profile.html', {
+        'listings': listings,
+        'form': form
     })
