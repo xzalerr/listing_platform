@@ -1,0 +1,79 @@
+{% extends 'template.html' %}
+
+{% block title %}{{ target_user.username }}'s Profile{% endblock %}
+
+{% block content %}
+<section class="container">
+    <div class="card">
+        <div class="card-body">
+            <h1 style="color: var(--primary); margin-bottom: 1rem;">
+                <i class="fas fa-user"></i> {{ target_user.username }}'s Profile
+            </h1>
+
+            <p><strong>Average Rating:</strong>
+                {% if avg_score %}
+                    {% for i in "12345" %}
+                        {% if forloop.counter <= avg_score %}
+                            <i class="fas fa-star" style="color: gold;"></i>
+                        {% else %}
+                            <i class="fas fa-star-o" style="color: gold;"></i>
+                        {% endif %}
+                    {% endfor %}
+                    ({{ avg_score|floatformat:1 }}/5)
+                {% else %}
+                    <span class="form-help">No ratings yet</span>
+                {% endif %}
+            </p>
+
+            <h3 style="margin-top: 2rem;">All Ratings:</h3>
+            {% if ratings %}
+                <ul class="message-list">
+                    {% for rating in ratings %}
+                        <li>
+                            <strong>{{ rating.reviewer.username }}</strong> –
+                            {% for i in "12345" %}
+                                {% if forloop.counter <= rating.score %}
+                                    <i class="fas fa-star" style="color: gold;"></i>
+                                {% else %}
+                                    <i class="fas fa-star-o" style="color: gold;"></i>
+                                {% endif %}
+                            {% endfor %}
+                            <span class="timestamp">({{ rating.created_at|date:"Y-m-d" }})</span>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="form-help">This user hasn't received any ratings yet.</p>
+            {% endif %}
+
+            {% if user.is_authenticated and user != target_user %}
+                {% if existing_rating %}
+                    <p style="margin-top: 2rem;">
+                        <em>You already rated this user:</em>
+                        {% for i in "12345" %}
+                            {% if forloop.counter <= existing_rating.score %}
+                                <i class="fas fa-star" style="color: gold;"></i>
+                            {% else %}
+                                <i class="fas fa-star-o" style="color: gold;"></i>
+                            {% endif %}
+                        {% endfor %}
+                        ({{ existing_rating.score }}/5)
+                    </p>
+                {% else %}
+                    <div class="form" style="margin-top: 2rem;">
+                        <h3>Rate this user</h3>
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                {{ form.score.label_tag }}
+                                {{ form.score }}
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit Rating</button>
+                        </form>
+                    </div>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}

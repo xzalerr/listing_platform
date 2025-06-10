@@ -591,3 +591,56 @@ nav ul {
 .message-wrapper.align-left {
     justify-content: flex-start;
 }
+
+.user-search-form {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.user-search-form input {
+    padding: 0.3rem;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+
+/* Improved search bar styling */
+.user-search-form.styled-search {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 0.3rem 0.6rem;
+    border-radius: var(--border-radius);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: var(--box-shadow);
+}
+
+.user-search-form.styled-search input {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid white;
+    padding: 0.4rem 0.5rem;
+    color: white;
+    font-weight: 500;
+    outline: none;
+    width: 120px;
+}
+
+.user-search-form.styled-search input::placeholder {
+    color: #e1e1e1;
+}
+
+.user-search-form.styled-search button {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 0.4rem;
+    font-size: 1rem;
+    transition: var(--transition);
+}
+
+.user-search-form.styled-search button:hover {
+    color: var(--primary-light);
+}

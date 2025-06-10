@@ -39,6 +39,14 @@
                             </a>
                         </li>
                         <li>
+                            <form action="{% url 'users:search' %}" method="get" class="user-search-form styled-search">
+                                <input type="text" name="q" placeholder="Search user..." required>
+                                <button type="submit" title="Search">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </form>
+                        </li>                                              
+                        <li>
                             <a href="{% url 'users:inbox' %}" class="nav-link-inbox">
                                 <i class="fas fa-inbox"></i> Inbox
                             </a>

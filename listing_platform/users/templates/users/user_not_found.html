@@ -1,0 +1,18 @@
+{% extends 'template.html' %}
+{% block title %}User Not Found{% endblock %}
+
+{% block content %}
+<section class="container">
+    <div class="card">
+        <div class="card-body" style="text-align: center;">
+            <h1 style="color: var(--primary); margin-bottom: 1rem;">
+                <i class="fas fa-user-times" style="color: #dc3545;"></i> No user found
+            </h1>
+            <p class="form-help">We couldn't find a user named <strong>"{{ query }}"</strong>.</p>
+            <a href="{% url 'home' %}" class="btn btn-secondary" style="margin-top: 1rem;">
+                <i class="fas fa-arrow-left"></i> Back to Home
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}

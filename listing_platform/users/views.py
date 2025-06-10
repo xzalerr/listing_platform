@@ -1,14 +1,16 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, SetPasswordForm
 from django.contrib.auth import login, logout, update_session_auth_hash
-from .models import Message
+from .models import Message, UserRating
 from listings.models import Listing
-from .forms import MessageForm, DirectMessageForm
+from .forms import DirectMessageForm, UserRatingForm
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.db import models
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 
 
 
@@ -104,3 +106,67 @@ def my_profile(request):
         'listings': listings,
         'form': form
     })
+
+@login_required
+def rate_user(request, user_id):
+    reviewed_user = get_object_or_404(User, id=user_id)
+
+    if reviewed_user == request.user:
+        messages.error(request, "Nie możesz ocenić samego siebie.")
+        return redirect('profile', user_id=user_id)
+
+    if UserRating.objects.filter(reviewer=request.user, reviewed=reviewed_user).exists():
+        messages.warning(request, "Już oceniłeś tego użytkownika.")
+        return redirect('profile', user_id=user_id)
+
+    if request.method == 'POST':
+        form = UserRatingForm(request.POST)
+        if form.is_valid():
+            rating = form.save(commit=False)
+            rating.reviewer = request.user
+            rating.reviewed = reviewed_user
+            rating.save()
+            messages.success(request, "Ocena została dodana.")
+            return redirect('profile', user_id=user_id)
+    else:
+        form = UserRatingForm()
+
+    return render(request, 'rate_user.html', {'form': form, 'reviewed_user': reviewed_user})
+
+def user_detail(request, username):
+    target_user = get_object_or_404(User, username=username)
+    ratings = UserRating.objects.filter(rated_user=target_user)
+    avg_score = ratings.aggregate(models.Avg('score'))['score__avg']
+    existing_rating = None
+
+    if request.user.is_authenticated and request.user != target_user:
+        existing_rating = UserRating.objects.filter(reviewer=request.user, rated_user=target_user).first()
+
+    if request.method == 'POST' and not existing_rating:
+        form = UserRatingForm(request.POST)
+        if form.is_valid():
+            rating = form.save(commit=False)
+            rating.reviewer = request.user
+            rating.rated_user = target_user
+            rating.save()
+            return redirect('users:user-detail', username=username)
+    else:
+        form = UserRatingForm()
+
+    return render(request, 'users/user_detail.html', {
+        'target_user': target_user,
+        'ratings': ratings,
+        'avg_score': avg_score,
+        'form': form,
+        'existing_rating': existing_rating,
+    })
+
+def user_search(request):
+    query = request.GET.get('q')
+    if query:
+        try:
+            user = User.objects.get(username__iexact=query)
+            return HttpResponseRedirect(reverse('users:user-detail', args=[user.username]))
+        except User.DoesNotExist:
+            return render(request, 'users/user_not_found.html', {'query': query})
+    return redirect('home')  # fallback
