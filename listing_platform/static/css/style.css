@@ -3,12 +3,14 @@
     --primary: #44B78B;
     --primary-light: #6bc9a8;
     --secondary: #2d7a5f;
-    --light: #f8f9fa;
-    --dark: #212529;
-    --gray: #6c757d;
-    --light-gray: #e9ecef;
+
+    --light: #1f1f1f;
+    --dark: #f8f9fa;
+    --gray: #aaaaaa;
+    --light-gray: #2b2b2b;
+
     --border-radius: 8px;
-    --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
     --transition: all 0.3s ease;
     --image-max-width: 550px;
 }
@@ -23,7 +25,7 @@
 
 body {
     min-height: 100vh;
-    background-color: var(--light);
+    background-color: var(--light); color: var(--dark);
     color: var(--dark);
     display: flex;
     flex-direction: column;
@@ -169,7 +171,7 @@ main {
 
 /* Cards */
 .card {
-    background: white;
+    background: var(--light-gray);
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
     padding: 2rem;
@@ -188,7 +190,7 @@ main {
 }
 
 .form {
-    background-color: var(--light-gray);
+    background-color: var(--light-gray); color: var(--dark);
     padding: 20px;
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
@@ -390,7 +392,7 @@ nav ul {
     transition: transform 0.2s ease, background-color 0.3s ease;
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
-    background-color: #f5f5f5;
+    background-color: #2c2c2c; color: var(--dark);
     overflow: hidden;
     max-width: 1200px;
     margin: 0 auto;
@@ -398,7 +400,7 @@ nav ul {
 
 .listing-link:hover {
     transform: scale(1.02);
-    background-color: #f5f5f5;
+    background-color: #2c2c2c; color: var(--dark);
     box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
 }
 
@@ -472,12 +474,12 @@ nav ul {
 }
 
 .message-card.sent {
-    background-color: #d1f0ff;
+    background-color: #325e49; color: var(--dark);
     align-self: flex-end;
 }
 
 .message-card.received {
-    background-color: #f0f0f0;
+    background-color: #2e2e2e; color: var(--dark);
     align-self: flex-start;
 }
 
@@ -527,7 +529,7 @@ nav ul {
 }
 
 .chat-row.sent .message-card {
-    background-color: #d1f0ff;
+    background-color: #325e49; color: var(--dark);
 }
 
 .chat-row.received .message-card {
@@ -544,12 +546,12 @@ nav ul {
 
 .chat-bubble.sent {
     align-self: flex-end;
-    background-color: #d1f0ff;
+    background-color: #325e49; color: var(--dark);
 }
 
 .chat-bubble.received {
     align-self: flex-start;
-    background-color: #f0f0f0;
+    background-color: #2e2e2e; color: var(--dark);
 }
 
 .timestamp {
@@ -602,45 +604,4 @@ nav ul {
     padding: 0.3rem;
     border-radius: 4px;
     border: 1px solid #ccc;
-}
-
-
-/* Improved search bar styling */
-.user-search-form.styled-search {
-    background-color: rgba(255, 255, 255, 0.1);
-    padding: 0.3rem 0.6rem;
-    border-radius: var(--border-radius);
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    box-shadow: var(--box-shadow);
-}
-
-.user-search-form.styled-search input {
-    background: transparent;
-    border: none;
-    border-bottom: 1px solid white;
-    padding: 0.4rem 0.5rem;
-    color: white;
-    font-weight: 500;
-    outline: none;
-    width: 120px;
-}
-
-.user-search-form.styled-search input::placeholder {
-    color: #e1e1e1;
-}
-
-.user-search-form.styled-search button {
-    background: none;
-    border: none;
-    color: white;
-    cursor: pointer;
-    padding: 0.4rem;
-    font-size: 1rem;
-    transition: var(--transition);
-}
-
-.user-search-form.styled-search button:hover {
-    color: var(--primary-light);
 }
