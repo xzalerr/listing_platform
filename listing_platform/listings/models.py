@@ -10,6 +10,20 @@ class Listing(models.Model):
     picture = models.ImageField(default='media/database_error.jpg', upload_to='main_images/', blank=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
 
+    PRICE_CHOICES = [
+        ('exchange', 'Exchange'),
+    ]
+
+    price_value = models.FloatField(null=True, blank=True)
+    price_option = models.CharField(max_length=10, choices=PRICE_CHOICES, null=True, blank=True)
+
+    def display_price(self):
+        if self.price_option == 'exchange':
+            return "Exchange"
+        elif self.price_value is not None:
+            return f"{self.price_value:.2f} zł"
+        return "No price"
+
     def __str__(self):
         return self.title
 

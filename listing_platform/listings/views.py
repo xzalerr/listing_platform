@@ -36,7 +36,10 @@ def listing_edit(request, slug):
     if request.method == 'POST':
         form = CreateListing(request.POST, request.FILES, instance=listing)
         if form.is_valid():
-            form.save()
+            listing = form.save(commit=False)
+            listing.price_value = form.cleaned_data['price_value']
+            listing.price_option = form.cleaned_data['price_option']
+            listing.save()
 
             # Delete selected images
             delete_ids = request.POST.get('delete_images', '')

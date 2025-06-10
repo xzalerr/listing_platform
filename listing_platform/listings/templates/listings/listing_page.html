@@ -14,6 +14,7 @@
             </p>
             <img src="{{ listing.picture.url }}" alt="{{ listing.title }}" class="listing-image">
             <p class="listing-description">{{ listing.description }}</p>
+            <p class="listing-price"><strong>Price:</strong> {{ listing.display_price }}</p>
 
             {% if listing.images.all %}
             <div class="gallery-grid">
