@@ -17,10 +17,15 @@ class DirectMessageForm(forms.ModelForm):
 class UserRatingForm(forms.ModelForm):
     class Meta:
         model = UserRating
-        fields = ['score']
+        fields = ['score', 'comment']
         widgets = {
-            'score': forms.Select(choices=[(i, str(i)) for i in range(1, 6)])
+            'score': forms.Select(choices=[(i, str(i)) for i in range(1, 6)]),
+            'comment': forms.Textarea(attrs={
+                'placeholder': 'Optional comment...',
+                'rows': 3,
+            }),
         }
         labels = {
-            'score': 'Rate this user (1–5)'
+            'score': 'Rating (1–5)',
+            'comment': 'Comment',
         }

@@ -13,11 +13,13 @@ class Message(models.Model):
 class UserRating(models.Model):
     reviewer = models.ForeignKey(User, on_delete=models.CASCADE, related_name='given_ratings')
     rated_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='received_ratings')
-    score = models.PositiveSmallIntegerField()  # from 1 to 5
+    score = models.PositiveSmallIntegerField()  # 1 to 5
+    comment = models.TextField(blank=True)  # <-- nowy komentarz
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        unique_together = ('reviewer', 'rated_user')  # only one rating per pair
+        unique_together = ('reviewer', 'rated_user')
 
     def __str__(self):
         return f"{self.reviewer.username} rated {self.rated_user.username} ({self.score}/5)"
+

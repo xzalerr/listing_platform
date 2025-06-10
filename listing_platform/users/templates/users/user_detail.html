@@ -29,7 +29,7 @@
             {% if ratings %}
                 <ul class="message-list">
                     {% for rating in ratings %}
-                        <li>
+                        <li style="margin-bottom: 1rem;">
                             <strong>{{ rating.reviewer.username }}</strong> –
                             {% for i in "12345" %}
                                 {% if forloop.counter <= rating.score %}
@@ -39,6 +39,9 @@
                                 {% endif %}
                             {% endfor %}
                             <span class="timestamp">({{ rating.created_at|date:"Y-m-d" }})</span>
+                            {% if rating.comment %}
+                                <p class="form-help" style="margin-top: 0.5rem;">"{{ rating.comment }}"</p>
+                            {% endif %}
                         </li>
                     {% endfor %}
                 </ul>
@@ -48,8 +51,8 @@
 
             {% if user.is_authenticated and user != target_user %}
                 {% if existing_rating %}
-                    <p style="margin-top: 2rem;">
-                        <em>You already rated this user:</em>
+                    <div style="margin-top: 2rem;">
+                        <p><em>You already rated this user:</em></p>
                         {% for i in "12345" %}
                             {% if forloop.counter <= existing_rating.score %}
                                 <i class="fas fa-star" style="color: gold;"></i>
@@ -58,7 +61,10 @@
                             {% endif %}
                         {% endfor %}
                         ({{ existing_rating.score }}/5)
-                    </p>
+                        {% if existing_rating.comment %}
+                            <p class="form-help" style="margin-top: 0.5rem;">"{{ existing_rating.comment }}"</p>
+                        {% endif %}
+                    </div>
                 {% else %}
                     <div class="form" style="margin-top: 2rem;">
                         <h3>Rate this user</h3>
@@ -68,6 +74,10 @@
                                 {{ form.score.label_tag }}
                                 {{ form.score }}
                             </div>
+                            <div class="form-group">
+                                {{ form.comment.label_tag }}
+                                {{ form.comment }}
+                            </div>                            
                             <button type="submit" class="btn btn-primary">Submit Rating</button>
                         </form>
                     </div>
